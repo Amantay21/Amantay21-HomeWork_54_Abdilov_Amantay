@@ -1,11 +1,31 @@
 from django import forms
 
-from webapp.models import Category
+from webapp.models import Category, Product, Cart, Order
 
 
-class ProductForms(forms.Form):
-    title = forms.CharField(max_length=200, required=True, label='Название')
-    description = forms.EmailField(max_length=400, required=True, label='Описание')
-    amount = forms.DecimalField(max_digits=7, decimal_places=2, required=True, label="Цена")
-    image = forms.CharField(max_length=5000, required=True, label='Изображение')
-    category = forms.ModelChoiceField(queryset=Category.object.all())
+class CategoryForms(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['title', 'description']
+
+
+class ProductForms(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['title', 'description', 'amount', 'image', 'category', 'qty']
+
+
+class CartForms(forms.ModelForm):
+    class Meta:
+        model = Cart
+        fields = ['product', 'qty']
+
+
+class OrderForms(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['name', 'address', 'phone_number']
+
+
+class SimpleSearchForm(forms.Form):
+    search = forms.CharField(max_length=100, required=False, label='Найти')
